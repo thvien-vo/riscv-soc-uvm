@@ -1,0 +1,4 @@
+# Mac dinh: moi file text dung xuong dong kieu Linux (LF)
+* text=auto eol=lf
+# Ngoai le: script Windows can xuong dong kieu Windows (CRLF)
+*.bat text eol=crlf
