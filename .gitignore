@@ -1,0 +1,21 @@
+# --- Output mo phong va build ---
+build/
+obj_dir/
+work/
+*.vcd
+*.fst
+*.log
+# --- Vivado XSim ---
+xsim.dir/
+xsim.covdb/
+.Xil/
+*.wdb
+*.jou
+*.pb
+# --- Phan mem RISC-V (file bien dich) ---
+*.o
+*.elf
+# --- Rac cua he dieu hanh va editor ---
+.vscode/
+*.swp
+Thumbs.db
