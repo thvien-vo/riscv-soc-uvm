@@ -2,12 +2,14 @@ TB    ?= tb_counter
 RTL   := rtl/counter.sv
 BUILD := build
 
-lint:
+drc:
 	verilator --lint-only -Wall $(RTL)
 
-sim: lint
+build: drc
 	mkdir -p $(BUILD)
 	iverilog -g2012 -o $(BUILD)/sim.out $(RTL) tb/$(TB).sv
+
+run: build
 	cd $(BUILD) && vvp sim.out
 
 wave:
@@ -16,4 +18,4 @@ wave:
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: lint sim wave clean
+.PHONY: drc build run wave clean
