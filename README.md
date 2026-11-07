@@ -9,7 +9,7 @@ A RISC-V SoC built from scratch, with a full UVM verification environment.
 - UVM testbenches with functional coverage and assertions
 
 ## Status
-Work in progress. Currently: environment setup.
+Work in progress. Currently: writing the first module.
 
 ## Tools
 Icarus Verilog, Verilator, GTKWave, RISC-V GNU toolchain, Spike, Vivado XSim (UVM)
