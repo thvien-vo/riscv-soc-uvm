@@ -36,17 +36,44 @@ initial begin
     $dumpvars(0, tb_shift_reg);
 
     rst_n = 1'b0;
-    en = 1'b0;
-    d = '0;
-
+    en    = 1'b0;
+    d     = '0;
     repeat (2) @(posedge clk);
 
     @(negedge clk);
-    check_shift(4'h0, "Row 0");
-    rst_n = 1;
+    check_shift(4'h0, "Row 0: reset");
+    rst_n = 1'b1;
+    en = 1'b1; d = 4'h1;            
+
+    @(negedge clk);
+    check_shift(4'h0, "Row 1: 1 entered, q still 0");
+    en = 1'b1; d = 4'h2;            
+
+    @(negedge clk);
+    check_shift(4'h0, "Row 2: q still 0");
+    en = 1'b1; d = 4'h3;            
+
+    @(negedge clk);
+    check_shift(4'h1, "Row 3: 1 reaches q after 3 cycles");
+    en = 1'b1; d = 4'h4;            
+
+    @(negedge clk);
+    check_shift(4'h2, "Row 4: order kept");
+    en = 1'b0; d = 4'hF;           
+
+    @(negedge clk);
+    check_shift(4'h2, "Row 5: en=0, hold");
+    en = 1'b0; d = 4'hF;            
+
+    @(negedge clk);
+    check_shift(4'h2, "Row 6: en=0, still hold");
+    en = 1'b1; d = 4'h5;            
+
+    @(negedge clk);
+    check_shift(4'h3, "Row 7: shifting resumes");
 
     if (errors == 0) $display("TEST PASSED");
-    else $display("TEST FAILED %0d error(s)", errors);
+    else             $display("TEST FAILED: %0d error(s)", errors);
 
     $finish;
 end
