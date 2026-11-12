@@ -5,3 +5,4 @@ rtl/tests/reg_n.sv
 rtl/tests/shift_reg.sv
 rtl/tests/regfile.sv
 rtl/tests/hs_if.sv
+rtl/tests/hs_pass.sv
