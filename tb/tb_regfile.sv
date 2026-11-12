@@ -51,9 +51,50 @@ initial begin
 
     repeat(2) @(posedge clk);
 
-    @(negedge clk) check_reg('0, '0, "ROW 0");
+    @(negedge clk) check_reg('0, '0, "ROW 0: reset");
     rst_n = 1'b1;
 
+    wr_reg.en = 1'b1;
+    wr_reg.addr = 5;
+    wr_reg.data = 32'h12345678;
+    rs1_addr = 5;
+    rs2_addr = 0;
+    @(negedge clk) check_reg(32'h12345678, 32'h00000000, "ROW 1: en=1, write x5");
+
+    wr_reg.en = 1'b1;
+    wr_reg.addr = 10;
+    wr_reg.data = 32'hCAFEBABE;
+    rs1_addr = 5;
+    rs2_addr = 10;
+    @(negedge clk) check_reg(32'h12345678, 32'hCAFEBABE, "ROW 2: en=1, write x10");
+    
+    wr_reg.en = 1'b0;
+    wr_reg.addr = 5;
+    wr_reg.data = 32'hFFFFFFFF;
+    rs1_addr = 5;
+    rs2_addr = 10;
+    @(negedge clk) check_reg(32'h12345678, 32'hCAFEBABE, "ROW 3: en=0 (no write)");
+
+    wr_reg.en = 1'b1;
+    wr_reg.addr = 0;
+    wr_reg.data = 32'hDEADBEEF;
+    rs1_addr = 0;
+    rs2_addr = 5;
+    @(negedge clk) check_reg(32'h00000000, 32'h12345678, "ROW 4: en=1, write x0");
+
+    wr_reg.en = 1'b1;
+    wr_reg.addr = 5;
+    wr_reg.data = 32'h00000001;
+    rs1_addr = 5;
+    rs2_addr = 5;
+    @(negedge clk) check_reg(32'h00000001, 32'h00000001, "ROW 5: en=1, overwrite x5");
+
+    wr_reg.en = 1'b0;
+    wr_reg.addr = '0;
+    wr_reg.data = '0;
+    rs1_addr = 10;
+    rs2_addr = 31;
+    @(negedge clk) check_reg(32'hCAFEBABE, 32'h00000000, "ROW 6: en=0, read x10 and x31");
 
     if (errors == 0) $display("TEST PASSED");
     else $display("TEST FAILED %0d error(s)", errors);
